@@ -6,7 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoteClasses
+namespace NoteClasses.DataAccess
 {
     public static class TextConnectorProcessor
     {
@@ -17,7 +17,7 @@ namespace NoteClasses
 
         public static List<string> LoadFile(this string file)
         {
-            if (!File.Exists(file)) 
+            if (!File.Exists(file))
             {
                 return new List<string>();
             }
@@ -40,7 +40,7 @@ namespace NoteClasses
                 output.Add(m);
             }
 
-            return output; 
+            return output;
         }
 
         public static void SaveToMessageFile(this List<MessageModel> models, string fileName)

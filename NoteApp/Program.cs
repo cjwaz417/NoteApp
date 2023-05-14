@@ -1,4 +1,5 @@
 namespace NoteApp
+
 {
     internal static class Program
     {
@@ -8,6 +9,8 @@ namespace NoteApp
         [STAThread]
         static void Main()
         {
+
+            NoteClasses.GlobalConfig.InitializeConnections(NoteClasses.DatabaseType.TextFile);
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
