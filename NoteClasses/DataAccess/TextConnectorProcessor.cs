@@ -54,5 +54,24 @@ namespace NoteClasses.DataAccess
 
             File.WriteAllLines(fileName.FullFilePath(), lines);
         }
+
+        public static void DeleteFromMessageFile(this List<MessageModel> model, string fileName)
+        {
+            string[] lines = File.ReadAllLines(fileName);
+
+
+            foreach (MessageModel m in model)
+            {
+                if (m.Id > 0)
+                {
+                    var tempList = lines.Where(item => Convert.ToInt32(item.Split(',')[0]) != m.Id).ToList();
+                    lines = tempList.ToArray();
+
+                    File.WriteAllLines(fileName.FullFilePath(), lines);
+                }
+
+
+            }
+        }
     }
 }

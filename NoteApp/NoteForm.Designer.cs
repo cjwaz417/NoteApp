@@ -98,6 +98,7 @@
             DeleteMessagesButton.TabIndex = 6;
             DeleteMessagesButton.Text = "Delete";
             DeleteMessagesButton.UseVisualStyleBackColor = true;
+            DeleteMessagesButton.Click += DeleteMessagesButton_Click;
             // 
             // NoteForm
             // 

@@ -9,22 +9,37 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
+using NoteClasses.DataAccess;
+using System.Runtime.CompilerServices;
 
 namespace NoteApp
 {
     public partial class NoteForm : Form
     {
-        private List<MessageModel> savedMessages = GlobalConfig.Connection.GetMessages();
+        private List<MessageModel> savedMessages;
+
+
+        
 
         public NoteForm()
         {
             InitializeComponent();
+            
 
             WireUpLists();
         }
 
         private void WireUpLists()
         {
+            try
+            {
+                savedMessages = GlobalConfig.Connection.GetMessages();
+            }
+            catch
+            {
+                savedMessages = new List<MessageModel>();
+            }
+            
             StoredMessagesListBox.DataSource = null;
             StoredMessagesListBox.DataSource = savedMessages;
             StoredMessagesListBox.DisplayMember = "Title";
@@ -55,5 +70,13 @@ namespace NoteApp
         {
 
         }
+
+        private void DeleteMessagesButton_Click(object sender, EventArgs e)
+        {
+            MessageModel m1 = (MessageModel)StoredMessagesListBox.SelectedItem;
+            GlobalConfig.Connection.DeleteMessage(m1);
+            WireUpLists();
+        }
+
     }
 }

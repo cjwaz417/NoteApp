@@ -11,5 +11,7 @@ namespace NoteClasses.DataAccess
         MessageModel CreateMessage (MessageModel message);
 
         List<MessageModel> GetMessages();
+
+        void DeleteMessage (MessageModel message);
     }
 }
