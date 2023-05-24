@@ -50,7 +50,7 @@ namespace NoteClasses.DataAccess
         }
 
         /* public MessageModel DeleteMessage(MessageModel message)
-        {
+        { tth
             delM = DeleteMessage(message);
             return delM;
         } */
