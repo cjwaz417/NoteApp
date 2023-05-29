@@ -57,21 +57,54 @@ namespace NoteClasses.DataAccess
 
         public static void DeleteFromMessageFile(this List<MessageModel> model, string fileName)
         {
-            string[] lines = File.ReadAllLines(fileName);
+            string[] lines = File.ReadAllLines(fileName.FullFilePath());
+            List<string> lineList = new List<string>(lines);
 
 
             foreach (MessageModel m in model)
             {
                 if (m.Id > 0)
                 {
-                    var tempList = lines.Where(item => Convert.ToInt32(item.Split(',')[0]) != m.Id).ToList();
+                    var tempList = new List<string>(lines);
+                    tempList.RemoveAt(m.Id -= 1);
                     lines = tempList.ToArray();
 
                     File.WriteAllLines(fileName.FullFilePath(), lines);
                 }
 
-
             }
+
+
+        }
+
+        public static void DecreaseIds(this List<MessageModel> m, string FileName)
+        {
+            string[] lines = File.ReadAllLines(FileName.FullFilePath());
+
+            List<string> updatedLines = new List<string>();
+
+            for (int i = 0; i <lines.Length; i++) 
+            { 
+                MessageModel m1 = ConvertLineToMessageModel(lines[i]);
+
+                m1.Id = Math.Max(m1.Id - 1, 0);
+                updatedLines.Add(m1.ToString());
+            
+            }
+
+            File.WriteAllLines(FileName.FullFilePath(), updatedLines);
+        }
+
+        private static MessageModel ConvertLineToMessageModel(string line)
+        {
+            string[] cols = line.Split(',');
+
+            MessageModel m = new MessageModel();
+            m.Id = int.Parse(cols[0].Trim());
+            m.Title = cols.Length > 1 ? cols[1].Trim() : null;
+            m.Message = cols.Length > 2 ? cols[2].Trim() : null;
+
+            return m;
         }
     }
 }

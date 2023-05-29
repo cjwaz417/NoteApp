@@ -40,6 +40,7 @@ namespace NoteApp
                 savedMessages = new List<MessageModel>();
             }
             
+            TitleTextBox.Clear();
             StoredMessagesListBox.DataSource = null;
             StoredMessagesListBox.DataSource = savedMessages;
             StoredMessagesListBox.DisplayMember = "Title";
@@ -74,7 +75,9 @@ namespace NoteApp
         private void DeleteMessagesButton_Click(object sender, EventArgs e)
         {
             MessageModel m1 = (MessageModel)StoredMessagesListBox.SelectedItem;
+            List<MessageModel> m2 = StoredMessagesListBox.Items.OfType<MessageModel>().ToList();
             GlobalConfig.Connection.DeleteMessage(m1);
+            GlobalConfig.Connection.DecreaseMessageIds(m2);
             WireUpLists();
         }
 

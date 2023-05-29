@@ -38,15 +38,23 @@ namespace NoteClasses.DataAccess
         {
             //List<MessageModel> message = MessageFile.FullFilePath().LoadFile().ConvertToMessageModel();
             //message.DeleteFromMessageFile(MessageFile);
-            List<MessageModel> message = new List<MessageModel> ();
+            List<MessageModel> message = new List<MessageModel>();
             message.Add (model);
             message.DeleteFromMessageFile(MessageFile);
+            
             
         }
 
         public List<MessageModel> GetMessages() 
         {
             return MessageFile.FullFilePath().LoadFile().ConvertToMessageModel();
+        }
+
+        public void DecreaseMessageIds(List<MessageModel> model)
+        {
+            List<MessageModel> message = new List<MessageModel> ();
+            message.AddRange(model);
+            message.DecreaseIds(MessageFile);
         }
 
         /* public MessageModel DeleteMessage(MessageModel message)
