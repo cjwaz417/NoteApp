@@ -77,7 +77,7 @@ namespace NoteApp
             MessageModel m1 = (MessageModel)StoredMessagesListBox.SelectedItem;
             List<MessageModel> m2 = StoredMessagesListBox.Items.OfType<MessageModel>().ToList();
             GlobalConfig.Connection.DeleteMessage(m1);
-            GlobalConfig.Connection.DecreaseMessageIds(m2);
+            
             WireUpLists();
         }
 

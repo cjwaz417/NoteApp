@@ -59,17 +59,40 @@ namespace NoteClasses.DataAccess
         {
             string[] lines = File.ReadAllLines(fileName.FullFilePath());
             List<string> lineList = new List<string>(lines);
+            const string MessageFile = "MessageFile.csv";
+            List<MessageModel> modelCopy = new List<MessageModel>(model);
 
-
-            foreach (MessageModel m in model)
+            foreach (MessageModel m in modelCopy)
             {
                 if (m.Id > 0)
                 {
                     var tempList = new List<string>(lines);
                     tempList.RemoveAt(m.Id -= 1);
+                    MessageModel m1 = new MessageModel();
+                    m1.Id = m.Id;
                     lines = tempList.ToArray();
+                    lineList = tempList;
+                    
+                    
+                    //model.RemoveAt(m.Id -= 1);
+                    List<MessageModel> modelsd = new List<MessageModel>();
+
+                    foreach (MessageModel md in lineList.ConvertToMessageModel())
+                    {
+                        if (md.Id > m1.Id)
+                        {
+                            modelsd.Add(md);
+                            
+                        }
+                    }
+                    
+
+                    
 
                     File.WriteAllLines(fileName.FullFilePath(), lines);
+                    modelsd.DecreaseIds(MessageFile);
+                    
+                    
                 }
 
             }
@@ -77,22 +100,36 @@ namespace NoteClasses.DataAccess
 
         }
 
-        public static void DecreaseIds(this List<MessageModel> m, string FileName)
+        public static List<string> DecreaseIds(this List<MessageModel> m, string FileName)
         {
             string[] lines = File.ReadAllLines(FileName.FullFilePath());
 
             List<string> updatedLines = new List<string>();
 
-            for (int i = 0; i <lines.Length; i++) 
+            
+
+            for (int i = 0; i < lines.Length; i++) 
             { 
                 MessageModel m1 = ConvertLineToMessageModel(lines[i]);
 
-                m1.Id = Math.Max(m1.Id - 1, 0);
-                updatedLines.Add(m1.ToString());
+                if (m.Any(model => model.Id == m1.Id))
+                {
+                    m1.Id = Math.Max(m1.Id - 1, 0);
+                    updatedLines.Add(m1.ToString());
+
+                }
+                else
+                {
+                    updatedLines.Add(lines[i]);
+                }
+               
             
             }
 
-            File.WriteAllLines(FileName.FullFilePath(), updatedLines);
+            lines = updatedLines.ToArray();
+
+            File.WriteAllLines(FileName.FullFilePath(), lines);
+            return updatedLines;
         }
 
         private static MessageModel ConvertLineToMessageModel(string line)
@@ -104,7 +141,9 @@ namespace NoteClasses.DataAccess
             m.Title = cols.Length > 1 ? cols[1].Trim() : null;
             m.Message = cols.Length > 2 ? cols[2].Trim() : null;
 
+
             return m;
+            
         }
     }
 }
