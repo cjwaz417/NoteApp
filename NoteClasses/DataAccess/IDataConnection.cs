@@ -16,6 +16,8 @@ namespace NoteClasses.DataAccess
 
         void DecreaseMessageIds (List<MessageModel> message);
 
+        void LoadMessage (MessageModel message);
+
 
     }
 }

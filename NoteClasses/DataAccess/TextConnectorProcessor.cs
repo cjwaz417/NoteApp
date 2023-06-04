@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -130,6 +131,23 @@ namespace NoteClasses.DataAccess
 
             File.WriteAllLines(FileName.FullFilePath(), lines);
             return updatedLines;
+        }
+
+        public static string LoadMessageFromFile(this  MessageModel messageModel, string FileName)
+        {
+            const string MessageFile = "MessageFile.csv";
+            List<MessageModel> messages = MessageFile.FullFilePath().LoadFile().ConvertToMessageModel();
+            MessageModel fetchedMessage = messages.FirstOrDefault(m => m.Id == messageModel.Id);
+
+            if(fetchedMessage != null) 
+            {
+                return messageModel.Message = fetchedMessage.Message;
+                
+            }
+            else
+            {
+                throw new Exception("Message not found");
+            }
         }
 
         private static MessageModel ConvertLineToMessageModel(string line)

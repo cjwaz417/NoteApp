@@ -19,12 +19,12 @@ namespace NoteApp
         private List<MessageModel> savedMessages;
 
 
-        
+
 
         public NoteForm()
         {
             InitializeComponent();
-            
+
 
             WireUpLists();
         }
@@ -39,7 +39,7 @@ namespace NoteApp
             {
                 savedMessages = new List<MessageModel>();
             }
-            
+
             TitleTextBox.Clear();
             StoredMessagesListBox.DataSource = null;
             StoredMessagesListBox.DataSource = savedMessages;
@@ -75,11 +75,25 @@ namespace NoteApp
         private void DeleteMessagesButton_Click(object sender, EventArgs e)
         {
             MessageModel m1 = (MessageModel)StoredMessagesListBox.SelectedItem;
-            List<MessageModel> m2 = StoredMessagesListBox.Items.OfType<MessageModel>().ToList();
+            //List<MessageModel> m2 = StoredMessagesListBox.Items.OfType<MessageModel>().ToList();
             GlobalConfig.Connection.DeleteMessage(m1);
-            
+
             WireUpLists();
         }
 
+        private void LoadMessagesButton_Click(object sender, EventArgs e)
+        {
+            MessageModel m = (MessageModel)StoredMessagesListBox.SelectedItem;
+            GlobalConfig.Connection.LoadMessage(m);
+            WireUpLists();
+            MessageTextBox.AppendText(m.Message.ToString());
+            TitleTextBox.AppendText(m.Title.ToString());
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageTextBox.Text = "";
+            WireUpLists();
+        }
     }
 }

@@ -35,6 +35,7 @@
             StoredMessagesListBox = new ListBox();
             LoadMessagesButton = new Button();
             DeleteMessagesButton = new Button();
+            ClearButton = new Button();
             SuspendLayout();
             // 
             // MessageTextBox
@@ -89,6 +90,7 @@
             LoadMessagesButton.TabIndex = 5;
             LoadMessagesButton.Text = "Load";
             LoadMessagesButton.UseVisualStyleBackColor = true;
+            LoadMessagesButton.Click += LoadMessagesButton_Click;
             // 
             // DeleteMessagesButton
             // 
@@ -100,11 +102,22 @@
             DeleteMessagesButton.UseVisualStyleBackColor = true;
             DeleteMessagesButton.Click += DeleteMessagesButton_Click;
             // 
+            // ClearButton
+            // 
+            ClearButton.Location = new Point(316, 444);
+            ClearButton.Name = "ClearButton";
+            ClearButton.Size = new Size(104, 48);
+            ClearButton.TabIndex = 7;
+            ClearButton.Text = "Clear";
+            ClearButton.UseVisualStyleBackColor = true;
+            ClearButton.Click += button1_Click;
+            // 
             // NoteForm
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(744, 548);
+            Controls.Add(ClearButton);
             Controls.Add(DeleteMessagesButton);
             Controls.Add(LoadMessagesButton);
             Controls.Add(StoredMessagesListBox);
@@ -129,5 +142,6 @@
         private ListBox StoredMessagesListBox;
         private Button LoadMessagesButton;
         private Button DeleteMessagesButton;
+        private Button ClearButton;
     }
 }

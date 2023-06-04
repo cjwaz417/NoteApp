@@ -57,10 +57,9 @@ namespace NoteClasses.DataAccess
             message.DecreaseIds(MessageFile);
         }
 
-        /* public MessageModel DeleteMessage(MessageModel message)
-        { tth
-            delM = DeleteMessage(message);
-            return delM;
-        } */
+        public void LoadMessage(MessageModel message)
+        {
+            message.LoadMessageFromFile(MessageFile);
+        }
     }
 }
