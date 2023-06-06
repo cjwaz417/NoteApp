@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace NoteClasses.DataAccess
 {
@@ -162,6 +163,36 @@ namespace NoteClasses.DataAccess
 
             return m;
             
+        }
+
+        private static string EncryptMessageMethod(string message, string key) 
+        {
+            byte[] encryptedBytes;
+
+            using (Aes aes = Aes.Create()) 
+            {
+                aes.Key = Encoding.UTF8.GetBytes(key);
+                aes.GenerateIV();
+
+                ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+
+                byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+
+                using (var encryptedStream = new System.IO.MemoryStream()) 
+                {
+                    using (var cryptoStream = new CryptoStream(encryptedStream, encryptor, CryptoStreamMode.Write))
+                    {
+                        cryptoStream.Write(messageBytes, 0, messageBytes.Length);
+                        cryptoStream.FlushFinalBlock();
+                    }
+
+                    encryptedBytes = encryptedStream.ToArray();
+
+                }
+
+                return Convert.ToBase64String(encryptedBytes);
+            }
+        
         }
     }
 }

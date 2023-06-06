@@ -61,5 +61,10 @@ namespace NoteClasses.DataAccess
         {
             message.LoadMessageFromFile(MessageFile);
         }
+
+        public void EncryptMesage(string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

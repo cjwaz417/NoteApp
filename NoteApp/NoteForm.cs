@@ -79,6 +79,7 @@ namespace NoteApp
             GlobalConfig.Connection.DeleteMessage(m1);
 
             WireUpLists();
+
         }
 
         private void LoadMessagesButton_Click(object sender, EventArgs e)
@@ -94,6 +95,21 @@ namespace NoteApp
         {
             MessageTextBox.Text = "";
             WireUpLists();
+        }
+
+
+
+        private void EncryptButton_Click(object sender, EventArgs e)
+        {
+            MessageModel m = new MessageModel();    
+            m.Message = MessageTextBox.Text;
+            GlobalConfig.Connection.EncryptMesage(m.Message);
+
+        }
+
+        private void DecryptButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
