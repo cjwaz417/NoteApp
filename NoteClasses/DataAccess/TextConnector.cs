@@ -11,7 +11,7 @@ namespace NoteClasses.DataAccess
     public class TextConnector : IDataConnection
     {
         private const string MessageFile = "MessageFile.csv";
-         MessageModel delM = new MessageModel();
+        MessageModel delM = new MessageModel();
 
 
         public MessageModel CreateMessage (MessageModel model)
@@ -62,9 +62,14 @@ namespace NoteClasses.DataAccess
             message.LoadMessageFromFile(MessageFile);
         }
 
-        public void EncryptMesage(string message)
+        public string EncryptMesage(string message, string key)
         {
-            throw new NotImplementedException();
+            return message.EncryptMessageMethod(key);
+        }
+
+        public string DecryptMessage(string key, string message)
+        {
+            return message.DecryptMessageMethod(key);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace NoteApp
     public partial class NoteForm : Form
     {
         private List<MessageModel> savedMessages;
-
+        public string Key { get; set; }
 
 
 
@@ -101,15 +101,29 @@ namespace NoteApp
 
         private void EncryptButton_Click(object sender, EventArgs e)
         {
-            MessageModel m = new MessageModel();    
+            
+            MessageModel m = new MessageModel();
             m.Message = MessageTextBox.Text;
-            GlobalConfig.Connection.EncryptMesage(m.Message);
-
+            EncryptForm form = new EncryptForm(this, m.Message);
+            form.Show();
+           
+            MessageTextBox.Text = m.Message;
         }
 
         private void DecryptButton_Click(object sender, EventArgs e)
         {
+            MessageModel m = new MessageModel();
+            m.Message = MessageTextBox.Text;
+            Decrypt form = new Decrypt(this , m.Message);
+            form.Show();
 
+            MessageTextBox.Text = m.Message;
+
+        }
+
+        public void SetEncryptedMessage(string message)
+        {
+            MessageTextBox.Text = message;
         }
     }
 }

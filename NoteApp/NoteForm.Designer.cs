@@ -64,7 +64,6 @@
             TitleLabel.Size = new Size(54, 30);
             TitleLabel.TabIndex = 2;
             TitleLabel.Text = "Title";
-            
             // 
             // SaveMessageButton
             // 

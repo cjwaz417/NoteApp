@@ -18,7 +18,9 @@ namespace NoteClasses.DataAccess
 
         void LoadMessage (MessageModel message);
 
-        void EncryptMesage (string message);
+        string EncryptMesage (string message, string key);
+
+        string DecryptMessage (string message, string key);
 
 
     }

@@ -165,15 +165,19 @@ namespace NoteClasses.DataAccess
             
         }
 
-        private static string EncryptMessageMethod(string message, string key) 
+        public static string EncryptMessageMethod(this string message, string key) 
         {
             byte[] encryptedBytes;
 
             using (Aes aes = Aes.Create()) 
             {
-                aes.Key = Encoding.UTF8.GetBytes(key);
-                aes.GenerateIV();
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    aes.Key = sha256.ComputeHash(Encoding.UTF8.GetBytes(key));
+                    int bsize = aes.BlockSize;
 
+                }
+                aes.GenerateIV();
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
                 byte[] messageBytes = Encoding.UTF8.GetBytes(message);
@@ -183,16 +187,56 @@ namespace NoteClasses.DataAccess
                     using (var cryptoStream = new CryptoStream(encryptedStream, encryptor, CryptoStreamMode.Write))
                     {
                         cryptoStream.Write(messageBytes, 0, messageBytes.Length);
-                        cryptoStream.FlushFinalBlock();
+                        //cryptoStream.FlushFinalBlock();
                     }
 
                     encryptedBytes = encryptedStream.ToArray();
 
                 }
 
-                return Convert.ToBase64String(encryptedBytes);
+                byte[] result = new byte[aes.IV.Length + encryptedBytes.Length];
+                Buffer.BlockCopy(aes.IV, 0, result, 0, aes.IV.Length);
+                Buffer.BlockCopy(encryptedBytes, 0, result, aes.IV.Length, encryptedBytes.Length);
+
+                return Convert.ToBase64String(result);
             }
         
+        }
+
+        public static string DecryptMessageMethod(this string encryptedMessage, string key)
+        {
+            string decryptedMessage;
+
+            byte[] encryptedBytesWithIV = Convert.FromBase64String(encryptedMessage);
+
+            using (Aes aes = Aes.Create())
+            {
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    aes.Key = sha256.ComputeHash(Encoding.UTF8.GetBytes(key));
+                }
+
+                // Extract IV from the beginning of the message
+                aes.IV = encryptedBytesWithIV.Take(aes.IV.Length).ToArray();
+
+                // Extract the actual encrypted message after the IV.
+                byte[] encryptedBytes = encryptedBytesWithIV.Skip(aes.IV.Length).ToArray();
+
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+                using (var decryptedStream = new MemoryStream())
+                {
+                    using (var cryptoStream = new CryptoStream(decryptedStream, decryptor, CryptoStreamMode.Write))
+                    {
+                        cryptoStream.Write(encryptedBytes, 0, encryptedBytes.Length);
+                        cryptoStream.FlushFinalBlock();
+                    }
+
+                    decryptedMessage = Encoding.UTF8.GetString(decryptedStream.ToArray());
+                }
+            }
+
+            return decryptedMessage;
         }
     }
 }
