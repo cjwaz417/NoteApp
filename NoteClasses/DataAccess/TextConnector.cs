@@ -14,25 +14,58 @@ namespace NoteClasses.DataAccess
         MessageModel delM = new MessageModel();
 
 
-        public MessageModel CreateMessage (MessageModel model)
+        public MessageModel CreateMessage(MessageModel model)
         {
-            List<MessageModel> message = MessageFile.FullFilePath().LoadFile().ConvertToMessageModel();
+            var messages = LoadMessagesFromFile();
 
-            int currentId = 1;
+            int newId = GetNewId(messages);
+            model.Id = newId;
 
-            if (message.Count > 0)
+            bool messageExists = UpdateMessageIfExists(messages, model);
+
+            if (!messageExists)
             {
-                currentId = message.OrderByDescending(x => x.Id).First().Id + 1;
+                messages.Add(model);
             }
 
-            model.Id = currentId;
-
-            message.Add (model);
-
-            message.SaveToMessageFile(MessageFile);
+            SaveMessagesToFile(messages);
 
             return model;
         }
+        private List<MessageModel> LoadMessagesFromFile()
+        {
+            return MessageFile.FullFilePath().LoadFile().ConvertToMessageModel();
+        }
+
+        private int GetNewId(List<MessageModel> messages)
+        {
+            if (messages.Count == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return messages.Max(m => m.Id) + 1;
+            }
+        }
+
+        private bool UpdateMessageIfExists(List<MessageModel> messages, MessageModel model)
+        {
+            var existingMessage = messages.FirstOrDefault(m => m.Title == model.Title);
+            if (existingMessage != null)
+            {
+                existingMessage.Message = model.Message;
+                return true;
+            }
+
+            return false;
+        }
+
+        private void SaveMessagesToFile(List<MessageModel> messages)
+        {
+            messages.SaveToMessageFile(MessageFile);
+        }
+
 
         void IDataConnection.DeleteMessage (MessageModel model) 
         {

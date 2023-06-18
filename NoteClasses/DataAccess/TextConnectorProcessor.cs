@@ -51,9 +51,9 @@ namespace NoteClasses.DataAccess
 
             foreach (MessageModel m in models)
             {
-                lines.Add($"{m.Id}, {m.Title}, {m.Message}");
+                    lines.Add($"{m.Id},{m.Title},{m.Message}");
             }
-
+                
             File.WriteAllLines(fileName.FullFilePath(), lines);
         }
 
@@ -136,6 +136,7 @@ namespace NoteClasses.DataAccess
 
         public static string LoadMessageFromFile(this  MessageModel messageModel, string FileName)
         {
+            
             const string MessageFile = "MessageFile.csv";
             List<MessageModel> messages = MessageFile.FullFilePath().LoadFile().ConvertToMessageModel();
             MessageModel fetchedMessage = messages.FirstOrDefault(m => m.Id == messageModel.Id);

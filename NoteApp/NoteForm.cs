@@ -84,6 +84,7 @@ namespace NoteApp
 
         private void LoadMessagesButton_Click(object sender, EventArgs e)
         {
+            MessageTextBox.Clear();
             MessageModel m = (MessageModel)StoredMessagesListBox.SelectedItem;
             GlobalConfig.Connection.LoadMessage(m);
             WireUpLists();
