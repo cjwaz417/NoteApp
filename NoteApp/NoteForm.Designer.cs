@@ -38,6 +38,7 @@
             ClearButton = new Button();
             EncryptButton = new Button();
             DecryptButton = new Button();
+            SendEmailButton = new Button();
             SuspendLayout();
             // 
             // MessageTextBox
@@ -134,11 +135,22 @@
             DecryptButton.UseVisualStyleBackColor = true;
             DecryptButton.Click += DecryptButton_Click;
             // 
+            // SendEmailButton
+            // 
+            SendEmailButton.Location = new Point(12, 516);
+            SendEmailButton.Name = "SendEmailButton";
+            SendEmailButton.Size = new Size(196, 48);
+            SendEmailButton.TabIndex = 10;
+            SendEmailButton.Text = "Send";
+            SendEmailButton.UseVisualStyleBackColor = true;
+            SendEmailButton.Click += SendEmailButton_Click;
+            // 
             // NoteForm
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(744, 548);
+            ClientSize = new Size(795, 576);
+            Controls.Add(SendEmailButton);
             Controls.Add(DecryptButton);
             Controls.Add(EncryptButton);
             Controls.Add(ClearButton);
@@ -169,5 +181,6 @@
         private Button ClearButton;
         private Button EncryptButton;
         private Button DecryptButton;
+        private Button SendEmailButton;
     }
 }

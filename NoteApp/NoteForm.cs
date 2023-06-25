@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Configuration;
 using NoteClasses.DataAccess;
 using System.Runtime.CompilerServices;
+using System.ComponentModel.DataAnnotations;
 
 namespace NoteApp
 {
@@ -102,12 +103,12 @@ namespace NoteApp
 
         private void EncryptButton_Click(object sender, EventArgs e)
         {
-            
+
             MessageModel m = new MessageModel();
             m.Message = MessageTextBox.Text;
             EncryptForm form = new EncryptForm(this, m.Message);
             form.Show();
-           
+
             MessageTextBox.Text = m.Message;
         }
 
@@ -115,7 +116,7 @@ namespace NoteApp
         {
             MessageModel m = new MessageModel();
             m.Message = MessageTextBox.Text;
-            Decrypt form = new Decrypt(this , m.Message);
+            Decrypt form = new Decrypt(this, m.Message);
             form.Show();
 
             MessageTextBox.Text = m.Message;
@@ -125,6 +126,25 @@ namespace NoteApp
         public void SetEncryptedMessage(string message)
         {
             MessageTextBox.Text = message;
+        }
+
+        public string GetMessage()
+        {
+            return MessageTextBox.Text;
+        }
+
+        public string GetTitle()
+        {
+            return TitleTextBox.Text;
+        }
+
+        private void SendEmailButton_Click(object sender, EventArgs e)
+        {
+            MessageModel m = new MessageModel();
+            m.Message = MessageTextBox.Text;
+            EmailForm email = new EmailForm(this, m.Message);
+            email.Show();
+
         }
     }
 }
