@@ -39,6 +39,7 @@
             EncryptButton = new Button();
             DecryptButton = new Button();
             SendEmailButton = new Button();
+            JokeButton = new Button();
             SuspendLayout();
             // 
             // MessageTextBox
@@ -145,11 +146,22 @@
             SendEmailButton.UseVisualStyleBackColor = true;
             SendEmailButton.Click += SendEmailButton_Click;
             // 
+            // JokeButton
+            // 
+            JokeButton.Location = new Point(214, 516);
+            JokeButton.Name = "JokeButton";
+            JokeButton.Size = new Size(206, 48);
+            JokeButton.TabIndex = 11;
+            JokeButton.Text = "SPICE IT UP!";
+            JokeButton.UseVisualStyleBackColor = true;
+            JokeButton.Click += JokeButton_Click;
+            // 
             // NoteForm
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(795, 576);
+            Controls.Add(JokeButton);
             Controls.Add(SendEmailButton);
             Controls.Add(DecryptButton);
             Controls.Add(EncryptButton);
@@ -182,5 +194,6 @@
         private Button EncryptButton;
         private Button DecryptButton;
         private Button SendEmailButton;
+        private Button JokeButton;
     }
 }

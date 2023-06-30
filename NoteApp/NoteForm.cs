@@ -146,5 +146,12 @@ namespace NoteApp
             email.Show();
 
         }
+
+        private async void JokeButton_Click(object sender, EventArgs e)
+        {
+            Joke joke = new Joke();
+            JokeResponse JR = await joke.GetAsync<JokeResponse>("https://v2.jokeapi.dev/joke/Any?blacklistFlags=racist,sexist");
+            MessageTextBox.Text += "\n" + JR.Setup + "\n" + JR.Delivery;
+        }
     }
 }
