@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             DecryptKeyButton = new Button();
-            DKeyValue = new TextBox();
+            KeyText = new TextBox();
             DKeyLabel = new Label();
             SuspendLayout();
             // 
@@ -43,13 +43,13 @@
             DecryptKeyButton.UseVisualStyleBackColor = true;
             DecryptKeyButton.Click += DecryptKeyButton_Click;
             // 
-            // DKeyValue
+            // KeyText
             // 
-            DKeyValue.Location = new Point(139, 33);
-            DKeyValue.Name = "DKeyValue";
-            DKeyValue.Size = new Size(229, 36);
-            DKeyValue.TabIndex = 4;
-            DKeyValue.TextChanged += DKeyValue_TextChanged;
+            KeyText.Location = new Point(139, 33);
+            KeyText.Name = "KeyText";
+            KeyText.Size = new Size(229, 36);
+            KeyText.TabIndex = 4;
+            KeyText.TextChanged += DKeyValue_TextChanged;
             // 
             // DKeyLabel
             // 
@@ -67,7 +67,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(427, 153);
             Controls.Add(DecryptKeyButton);
-            Controls.Add(DKeyValue);
+            Controls.Add(KeyText);
             Controls.Add(DKeyLabel);
             Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
             Margin = new Padding(5, 6, 5, 6);
@@ -80,7 +80,7 @@
         #endregion
 
         private Button DecryptKeyButton;
-        private TextBox DKeyValue;
+        private TextBox KeyText;
         private Label DKeyLabel;
     }
 }

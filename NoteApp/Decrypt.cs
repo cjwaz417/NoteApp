@@ -1,4 +1,5 @@
 ﻿using NoteClasses;
+using NoteClasses.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,8 +25,18 @@ namespace NoteApp
 
         private void DecryptKeyButton_Click(object sender, EventArgs e)
         {
+            encryptKey.Key = KeyText.Text;
             string encryptedMessage = GlobalConfig.Connection.DecryptMessage(this.encryptKey.Key, this.message);
-            this.encryptKey.SetEncryptedMessage(encryptedMessage);
+            string result = encryptedMessage;
+            if (result == "Wrong Key Entered")
+            {
+                MessageBox.Show(result, "Wrong Key");
+            }
+            else
+            {
+                this.encryptKey.SetEncryptedMessage(encryptedMessage);
+            }
+            
             this.Close();
 
         }

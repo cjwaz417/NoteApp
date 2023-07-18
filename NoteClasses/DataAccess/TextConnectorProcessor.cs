@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
+
 namespace NoteClasses.DataAccess
 {
     public static class TextConnectorProcessor
@@ -210,34 +211,41 @@ namespace NoteClasses.DataAccess
 
             byte[] encryptedBytesWithIV = Convert.FromBase64String(encryptedMessage);
 
-            using (Aes aes = Aes.Create())
+            try
             {
-                using (SHA256 sha256 = SHA256.Create())
+                using (Aes aes = Aes.Create())
                 {
-                    aes.Key = sha256.ComputeHash(Encoding.UTF8.GetBytes(key));
-                }
-
-                // Extract IV from the beginning of the message
-                aes.IV = encryptedBytesWithIV.Take(aes.IV.Length).ToArray();
-
-                // Extract the actual encrypted message after the IV.
-                byte[] encryptedBytes = encryptedBytesWithIV.Skip(aes.IV.Length).ToArray();
-
-                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-
-                using (var decryptedStream = new MemoryStream())
-                {
-                    using (var cryptoStream = new CryptoStream(decryptedStream, decryptor, CryptoStreamMode.Write))
+                    using (SHA256 sha256 = SHA256.Create())
                     {
-                        cryptoStream.Write(encryptedBytes, 0, encryptedBytes.Length);
-                        cryptoStream.FlushFinalBlock();
+                        aes.Key = sha256.ComputeHash(Encoding.UTF8.GetBytes(key));
                     }
 
-                    decryptedMessage = Encoding.UTF8.GetString(decryptedStream.ToArray());
-                }
-            }
+                    // Extract IV from the beginning of the message
+                    aes.IV = encryptedBytesWithIV.Take(aes.IV.Length).ToArray();
 
-            return decryptedMessage;
-        }
+                    // Extract the actual encrypted message after the IV.
+                    byte[] encryptedBytes = encryptedBytesWithIV.Skip(aes.IV.Length).ToArray();
+
+                    ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+                    using (var decryptedStream = new MemoryStream())
+                    {
+                        using (var cryptoStream = new CryptoStream(decryptedStream, decryptor, CryptoStreamMode.Write))
+                        {
+                            cryptoStream.Write(encryptedBytes, 0, encryptedBytes.Length);
+                            cryptoStream.FlushFinalBlock();
+                        }
+
+                        decryptedMessage = Encoding.UTF8.GetString(decryptedStream.ToArray());
+                    }
+                }
+
+                return decryptedMessage;
+            }
+            catch (CryptographicException ex)
+            {
+                return "Wrong Key Entered";
+            }
+            } 
     }
 }
