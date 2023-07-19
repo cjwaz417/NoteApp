@@ -45,6 +45,25 @@ namespace NoteClasses.DataAccess
 
             return output;
         }
+        //The below method will be used for converting messages from web API to a MessageModel
+        public static List<MessageModel> ConvertWebToMessageModel(this List<string> lines)
+        {
+            List<MessageModel> output = new List<MessageModel>();
+
+            foreach (string line in lines)
+            {
+                string[] cols = line.Split(',');
+
+                MessageModel m = new MessageModel();
+                // Need a way to assign IDs to the web messages. PHP maybe? 
+                //m.Id = int.Parse(cols[0]);
+                m.Title = cols[0];
+                m.Message = cols[1];
+                output.Add(m);
+            }
+
+            return output;
+        }
 
         public static void SaveToMessageFile(this List<MessageModel> models, string fileName)
         {
