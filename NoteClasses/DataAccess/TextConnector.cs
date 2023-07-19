@@ -38,7 +38,7 @@ namespace NoteClasses.DataAccess
             return MessageFile.FullFilePath().LoadFile().ConvertToMessageModel();
         }
 
-        private int GetNewId(List<MessageModel> messages)
+        public int GetNewId(List<MessageModel> messages)
         {
             if (messages.Count == 0)
             {

@@ -15,7 +15,7 @@ namespace NoteClasses.DataAccess
     {
         public static string FullFilePath(this string fileName)
         {
-            return $"{ConfigurationManager.AppSettings["filepath"]}\\{fileName}";
+            return $"{ConfigurationManager.AppSettings["filePath"]}\\{fileName}";
         }
 
         public static List<string> LoadFile(this string file)
@@ -45,25 +45,25 @@ namespace NoteClasses.DataAccess
 
             return output;
         }
-        //The below method will be used for converting messages from web API to a MessageModel
-        public static List<MessageModel> ConvertWebToMessageModel(this List<string> lines)
-        {
-            List<MessageModel> output = new List<MessageModel>();
+        //The below method will be used for converting messages from web API to a MessageModel (actually probably don't need this, ID is being assigned)
+        //public static List<MessageModel> ConvertWebToMessageModel(this List<string> lines)
+        //{
+        //    List<MessageModel> output = new List<MessageModel>();
 
-            foreach (string line in lines)
-            {
-                string[] cols = line.Split(',');
+        //    foreach (string line in lines)
+        //    {
+        //        string[] cols = line.Split(',');
 
-                MessageModel m = new MessageModel();
-                // Need a way to assign IDs to the web messages. PHP maybe? 
-                //m.Id = int.Parse(cols[0]);
-                m.Title = cols[0];
-                m.Message = cols[1];
-                output.Add(m);
-            }
+        //        MessageModel m = new MessageModel();
+        //        // Need a way to assign IDs to the web messages. PHP maybe? 
+        //        //m.Id = int.Parse(cols[0]);
+        //        m.Title = cols[0];
+        //        m.Message = cols[1];
+        //        output.Add(m);
+        //    }
 
-            return output;
-        }
+        //    return output;
+        //}
 
         public static void SaveToMessageFile(this List<MessageModel> models, string fileName)
         {
@@ -76,7 +76,20 @@ namespace NoteClasses.DataAccess
                 
             File.WriteAllLines(fileName.FullFilePath(), lines);
         }
+        //created the below method so that I could just pass the filepath. It was acting weird when using the above method
+        public static void WebSaveToMessageFile(this List<MessageModel> models, string fileName, string filePath)
+        {
+            List<string> lines = new List<string>();
 
+            foreach (MessageModel m in models)
+            {
+                lines.Add($"{m.Id},{m.Title},{m.Message}");
+            }
+
+            string FullFilePath = $"{filePath}\\{fileName}";
+
+            File.WriteAllLines(FullFilePath, lines);
+        }
         public static void DeleteFromMessageFile(this List<MessageModel> model, string fileName)
         {
             string[] lines = File.ReadAllLines(fileName.FullFilePath());
