@@ -21,12 +21,16 @@ namespace WebNotes.Controllers
             //System.IO.File.AppendAllText(filePath, textToWrite);
 
             WebMessages processor = new WebMessages();
-            var messages = processor.LoadMessagesFromFile();
+            var messages = processor.LoadMessagesFromFile(filePath);
             int newid = processor.GetNewId(messages);
             message.ID = newid;
-            var lines = processor.MessageDtoToStringList(message);
-            var webMessages = lines.ConvertToMessageModel();
-            webMessages.WebSaveToMessageFile(MessageFile, filePath);
+
+            //create MessageModel from message
+            var m = processor.MessageDtoToStringList(message);
+            var webMessagesModel = m.ConvertToMessageModel();
+
+            messages.Add(webMessagesModel[0]);
+            messages.WebSaveToMessageFile(MessageFile, filePath);
             
             
             return Ok();

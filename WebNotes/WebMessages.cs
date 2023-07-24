@@ -11,15 +11,17 @@ namespace WebNotes
         private readonly IConfiguration _configuration;
         private string FilePath { get; set; }
 
-       //public WebMessages(IConfiguration configuration)
-       // {
-       //     _configuration = configuration;
-       //     FilePath = _configuration.GetValue<string>("FilePath");
-       // }
+        //public WebMessages(IConfiguration configuration)
+        // {
+        //     _configuration = configuration;
+        //     FilePath = _configuration.GetValue<string>("FilePath");
+        // }
 
-        public List<MessageModel> LoadMessagesFromFile()
+        public List<MessageModel> LoadMessagesFromFile(string FilePath)
         {
-            return MessageFile.FullFilePath().LoadFile().ConvertToMessageModel();
+            string FullFilePath = $"{FilePath}{MessageFile}";
+
+            return FullFilePath.LoadFile().ConvertToMessageModel();
         }
 
         public int GetNewId(List<MessageModel> messages)

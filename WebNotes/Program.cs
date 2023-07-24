@@ -16,6 +16,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
+
 app.UseCors(builder => builder
     .WithOrigins("http://localhost")
     .AllowAnyMethod()
