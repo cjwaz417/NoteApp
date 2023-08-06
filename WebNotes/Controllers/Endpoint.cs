@@ -17,8 +17,6 @@ namespace WebNotes.Controllers
         public IActionResult Post([FromBody] MessageDto message)
         {
             var filePath = "C:\\Data\\NoteApp\\";
-            //var textToWrite = $"Title: {message.Title}\nMessage: {message.Text}\n---\n";
-            //System.IO.File.AppendAllText(filePath, textToWrite);
 
             WebMessages processor = new WebMessages();
             var messages = processor.LoadMessagesFromFile(filePath);
@@ -31,11 +29,38 @@ namespace WebNotes.Controllers
 
             messages.Add(webMessagesModel[0]);
             messages.WebSaveToMessageFile(MessageFile, filePath);
-            
-            
+
+
             return Ok();
         }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            string filePath = "C:\\Data\\NoteApp\\MessageFile.csv";
+
+            //if (System.IO.File.Exists(filePath))
+            //{
+                var data = System.IO.File.ReadAllLines(filePath).ToList();
+                string messageTitle = string.Empty;
+                foreach (string line in data)
+                {
+                    string[] cols = line.Split(',');
+                    int ID = int.Parse(cols[0]);
+                    string title = cols[1];
+                    string message = cols[2];
+                    messageTitle = title;
+                }
+
+
+                return Ok(new { message = messageTitle });
+            //}
+
+
+        }
     }
+
+
     public class MessageDto
     {
         public int ID { get; set; }
