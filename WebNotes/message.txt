@@ -1,6 +1,0 @@
-Title: string
-Message: string
----
-Title: string
-Message: string
----

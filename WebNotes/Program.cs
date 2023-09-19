@@ -1,3 +1,5 @@
+using WebNotes;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +8,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<WebMessages>();
 
 var app = builder.Build();
 
@@ -19,7 +22,7 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 
 app.UseCors(builder => builder
-    .WithOrigins("http://localhost")
+    .WithOrigins("http://localhost:8080")
     .AllowAnyMethod()
     .AllowAnyHeader());
 
@@ -30,3 +33,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
